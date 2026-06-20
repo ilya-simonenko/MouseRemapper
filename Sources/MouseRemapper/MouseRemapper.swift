@@ -53,7 +53,7 @@ class MouseRemapper {
             eventsOfInterest: CGEventMask(eventMask),
             callback: { proxy, type, event, userInfo in
                 guard let userInfo = userInfo else {
-                    return Unmanaged.passRetained(event)
+                    return Unmanaged.passUnretained(event)
                 }
                 
                 let remapper = Unmanaged<MouseRemapper>.fromOpaque(userInfo).takeUnretainedValue()
@@ -63,11 +63,11 @@ class MouseRemapper {
                     if let eventTap = remapper.eventTap {
                         CGEvent.tapEnable(tap: eventTap, enable: true)
                     }
-                    return Unmanaged.passRetained(event)
+                    return Unmanaged.passUnretained(event)
                 }
-                
+
                 if let modifiedEvent = remapper.eventHandler.handleEvent(event) {
-                    return Unmanaged.passRetained(modifiedEvent)
+                    return Unmanaged.passUnretained(modifiedEvent)
                 }
                 
                 return nil
